@@ -43,6 +43,7 @@ async function run() {
         const ordersCollection = database.collection('orders');
         const usersCollection = database.collection('users');
         const reviewsCollection = database.collection('reviews');
+        const servicesCollection = database.collection('services');
 
         app.get('/orders', verifyToken, async (req, res) => {
 
@@ -73,7 +74,6 @@ async function run() {
         app.post('/users', async (req, res) => {
             const user = req.body;
             const result = await usersCollection.insertOne(user);
-            console.log(result);
             res.json(result);
         });
 
@@ -104,11 +104,29 @@ async function run() {
             }
         });
 
+        app.get('/services', async (req, res) => {
+            const cursor = servicesCollection.find({});
+            const services = await cursor.toArray();
+            res.json(services);
+        });
+
+        app.post('/services', async (req, res) => {
+            const service = req.body;
+            const result = await servicesCollection.insertOne(service);
+            res.json(result);
+        })
+
         app.get('/reviews', async (req, res) => {
             const cursor = reviewsCollection.find({});
             const reviews = await cursor.toArray();
             res.json(reviews);
         });
+
+        app.post('/reviews', async (req, res) => {
+            const review = req.body;
+            const result = await reviewsCollection.insertOne(review);
+            res.json(result);
+        })
 
     }
     finally {
