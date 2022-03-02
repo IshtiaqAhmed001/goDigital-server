@@ -42,6 +42,7 @@ async function run() {
         const database = client.db('goDigital_Agency');
         const ordersCollection = database.collection('orders');
         const usersCollection = database.collection('users');
+        const reviewsCollection = database.collection('reviews');
 
         app.get('/orders', verifyToken, async (req, res) => {
 
@@ -101,6 +102,12 @@ async function run() {
             else {
                 res.status(403).json({ message: 'You do not have access to make a user Admin' });
             }
+        });
+
+        app.get('/reviews', async (req, res) => {
+            const cursor = reviewsCollection.find({});
+            const reviews = await cursor.toArray();
+            res.json(reviews);
         });
 
     }
