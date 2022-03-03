@@ -44,6 +44,7 @@ async function run() {
         const usersCollection = database.collection('users');
         const reviewsCollection = database.collection('reviews');
         const servicesCollection = database.collection('services');
+        const packagesCollection = database.collection('availablePackages');
 
         app.get('/orders', verifyToken, async (req, res) => {
 
@@ -123,6 +124,11 @@ async function run() {
             res.json(result);
         })
 
+        app.get('/availablePackages', async (req, res) => {
+            const cursor = packagesCollection.find({});
+            const availablePackages = await cursor.toArray();
+            res.json(availablePackages);
+        });
         app.get('/reviews', async (req, res) => {
             const cursor = reviewsCollection.find({});
             const reviews = await cursor.toArray();
